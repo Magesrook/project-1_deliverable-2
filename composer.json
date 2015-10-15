@@ -1,0 +1,15 @@
+{
+  "name": "magesrook/D2",
+  "description": "Deliverable2t",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Mark Schulz",
+      "email": "markschulz@mail.weber.edu"
+    }
+  ],
+  "require": {
+    "silex/silex": "*"
+  }
+}
