@@ -5,13 +5,35 @@
  * Date: 10/8/2015
  * Time: 7:05 PM
  */
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once '../vendor/autoload.php';
+
+
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+
 
 // init Silex app
 $app = new Silex\Application();
 
 $app['debug'] = true;
+
+$books = array(
+    '00001'=> array(
+        'title' => 'Aeronauts Windlass',
+        'author' => 'Jim Butcher',
+        'publisher' => 'Taw Dor',
+        'rating' => 'four stars',
+    ),
+    '00002' => array(
+        'title' => 'Full Moon',
+        'author' => 'Jim Butcher',
+        'publisher' => 'Taw Dor',
+        'rating' => 'five stars',
+    ),
+);
 
 $user = array(
     '00001'=> array(
@@ -28,52 +50,86 @@ $user = array(
     ),
 );
 
-$app->get('/', function() use ($user) {
 
-    return json_encode($user);
-});
-
-$app->get('/{stockcode}', function (Silex\Application $app, $stockcode) use ($user) {
-
-    if (!isset($user[$stockcode])) {
-        $app->abort(404, "Stockcode {$stockcode} does not exist.");
+$app->get('/book', function(Request $request) use ($books)
+{
+    $input = '<table style="width:33%">';
+    foreach ($books as $get) {
+        $input .= '<tr><td>';
+        $input .= $get['title'];
+        $input .= '</td><td>';
+        $input .= $get['author'];
+        $input .= '</td><td>';
+        $input .= $get['publisher'];
+        $input .= '</td><td>';
+        $input .= $get['rating'];
+        $input .= '</td></tr><br />';
     }
-    return json_encode($user[$stockcode]);
+    $input .= '</table">';
+    return $input;
 });
+
+
+
+
+$app->post('/book', function() use ($books) {
+    $output = '<table style="width:33%">';
+    foreach ($books as $post) {
+        $output .= '<tr><td>';
+        $output .= $post['title'];
+        $output .= '</td><td>';
+        $output .= $post['author'];
+        $output .= '</td><td>';
+        $output .= $post['publisher'];
+        $output .= '</td><td>';
+        $output .= $post['rating'];
+        $output .= '</td></tr><br />';
+    }
+
+    return $output;
+    return json_encode($output);
+});
+
+$app->get('/user', function(Request $request) use ($user)
+{
+    $input = '<table style="width:33%">';
+    foreach ($user as $get) {
+        $input .= '<tr><td>';
+        $input .= $get['name'];
+        $input .= '</td><td>';
+        $input .= $get['phone'];
+        $input .= '</td><td>';
+        $input .= $get['email'];
+        $input .= '</td><td>';
+        $input .= $get['username'];
+        $input .= '</td></tr><br />';
+    }
+    $input .= '</table">';
+    return $input;
+});
+
+
+
+
+$app->post('/user', function() use ($user) {
+    $output = '<table style="width:33%">';
+    foreach ($user as $post) {
+        $output .= '<tr><td>';
+        $output .= $post['name'];
+        $output .= '</td><td>';
+        $output .= $post['phone'];
+        $output .= '</td><td>';
+        $output .= $post['email'];
+        $output .= '</td><td>';
+        $output .= $post['username'];
+        $output .= '</td></tr><br />';
+    }
+
+    return $output;
+    return json_encode($output);
+});
+
+
 
 $app->run();
-
-
-$app = new Silex\Application();
-
-$app['debug'] = true;
-
-$books = array(
-    '00001'=> array(
-        'title' => 'Aeronauts Windlass',
-        'auhor' => 'Jim Butcher',
-        'publisher' => 'Taw Dor',
-        'rating' => 'four stars',
-    ),
-    '00002' => array(
-        'title' => 'Full Moon',
-        'auhor' => 'Jim Butcher',
-        'publisher' => 'Taw Dor',
-        'rating' => 'five stars',
-    ),
-);
-
-$app->get('/', function() use ($books) {
-
-    return json_encode($books);
-});
-
-$app->get('/{stockcode}', function (Silex\Application $app, $stockcode) use ($books) {
-
-    if (!isset($books[$stockcode])) {
-        $app->abort(404, "Stockcode {$stockcode} does not exist.");
-    }
-    return json_encode($books[$stockcode]);
-});
-
-$app->run();
+?>
